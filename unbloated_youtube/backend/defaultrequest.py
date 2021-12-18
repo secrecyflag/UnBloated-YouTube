@@ -28,8 +28,9 @@ class DefaultRequest:
                 raise NoPostData()
             self.req = urllib.request.Request(self.url, data=self.post_data)
         else:
-            self.req = urllib.request.Request(self.url)
-        self.req.add_header("user-agent", self.headers['user-agent'])
+            self.req = urllib.request.Request(self.url) 
+        user_agent = self.headers["user-agent"] if "user-agent" in self.headers.keys() else self.headers["User-Agent"]
+        self.req.add_header("User-Agent", user_agent)
         if "content-type" in self.headers.keys() or "Content-Type" in self.headers.keys():
             key = "Content-Type" if "Content-Type" in self.headers.keys() else "content-type"
             self.req.add_header("Content-Type", self.headers[key])
