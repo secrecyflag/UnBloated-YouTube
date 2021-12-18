@@ -11,16 +11,18 @@ class YtConfig(DefaultRequest):
     youtube html videos has a var called: "ytInitialPlayerResponse" it has some very useful information about the video, such as url links, and quality video and so on.
 
     """
-    def __init__(self, url, headers, html=None, start=False, more=False):
+    def __init__(self, url, headers, html=None, start=False, more=False, is_video=True):
         """
         
         :param start: make request right away when creating object
         :param more: there is additional information from youtube config, 
         which can be found in `ytcfg.set...` calls.
+        :param is_not_video: specifying if we're not in any YouTube video. useful if there is no ytInitialPlayerResponse variable
         """
         super().__init__(url, headers, html, start)
-        self.config = None
+        self.config = {}
         self.more = more
+        self.is_video = is_video
 
     def getconfig(self):
         """
@@ -29,11 +31,12 @@ class YtConfig(DefaultRequest):
         """
         if self.req is None:
             return False
-        self.config = re.search(RePatterns.CONFIG_PATTERN, self.result).group(0)
-        self.config = self.config.replace(Common.VAR_YTCONFIG, "").strip()
-        self.config = self.config.replace("=", "", 1).strip()
-        self.config = self.config.replace(";var", "")
-        self.config = json.loads(self.config)
+        if self.is_video:
+            self.config = re.search(RePatterns.CONFIG_PATTERN, self.result).group(0)
+            self.config = self.config.replace(Common.VAR_YTCONFIG, "").strip()
+            self.config = self.config.replace("=", "", 1).strip()
+            self.config = self.config.replace(";var", "")
+            self.config = json.loads(self.config)
         if self.more:  # if requested for additional information
             additional = re.search(RePatterns.YTCFG_MORE, self.result).group(0)
             additional = additional.replace(");", "").strip()
