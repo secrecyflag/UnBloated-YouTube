@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>
+            {% if title != "" %} 
+                {{ title }} - UnBloated YouTube
+            {% else %}
+                UnBloated YouTube
+            {% endif %}
+        </title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+        <meta charset="UTF-8">
+    </head>
+    <body>
+        <!-- Search button -->
+        <div class="search">
+            <form action="/results", method="post"> 
+                <p><input type="text" name="query" placeholder="Search" class="search_input" 
+                {% block if_search %}
+                {% endblock if_search %}></p>
+            </form>
+        </div>
+        {% block body %}
+        {% endblock body %}
+    </body>
+</html>
+

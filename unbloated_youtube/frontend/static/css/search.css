@@ -1,0 +1,8 @@
+.search {
+    text-align: center;
+}
+.search_input {
+    width: 500px;
+    height: 30px;
+    border: 1px solid black;
+}
