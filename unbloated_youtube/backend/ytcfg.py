@@ -2,8 +2,6 @@ import re
 from .constants import Common, RePatterns
 from .defaultrequest import DefaultRequest
 import json
-import sys
-print(print(sys.path))
 import exceptions
 
 

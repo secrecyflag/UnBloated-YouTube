@@ -90,7 +90,6 @@ def autocomplete_search(search_link, query, headers=None):
     user_agent = headers["User-Agent"] if "User-Agent" in headers.keys() else headers["user-agent"]
     if headers is not None:
         req.add_header("User-Agent", user_agent)
-    print(search_link.format(query))
     results = urllib.request.urlopen(req).read().decode("utf-8")
     results = re.search(RePatterns.SEARCH_RESULTS, results).group()
     # reformatting
