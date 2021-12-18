@@ -3,3 +3,8 @@
 {% block if_search %}
     value={{ query }}
 {% endblock if_search %}
+{% block body %}
+{% for result in results(query) %}
+<p>{{ result }}</p>
+{% endfor %}
+{% endblock body %}

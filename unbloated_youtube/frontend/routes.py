@@ -15,5 +15,5 @@ def results():
     query = ""
     if request.method == Methods.POST:
         query = request.form["query"]
-    return render_template("results.html", title=Titles.RESULTS, query=query, suggestions=search.search_suggestions(query))
+    return render_template("results.html", title=Titles.RESULTS, query=query, results=search.search_results)
 
