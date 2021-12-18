@@ -141,7 +141,7 @@ class YtConfig(DefaultRequest):
         self.basic_exception_check(True)
         return self.config["LINK_API_KEY"]
 
-    def get_search_url(self):
+    def get_search_suggestions_url(self):
         self.basic_exception_check(True)
         return "https://" + self.config["SBOX_SETTINGS"]["SEARCHBOX_HOST_OVERRIDE"] + "/complete/search?client=youtube&q={0}"
 
