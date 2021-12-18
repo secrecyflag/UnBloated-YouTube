@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-from .defaultrequest import DefaultRequest
-from .constants import Urls, RePatterns
+from defaultrequest import DefaultRequest
+from constants import Urls, RePatterns
 import json
 import urllib
 import re
-from . import exceptions
+import exceptions
 
 
 class Recommendation:

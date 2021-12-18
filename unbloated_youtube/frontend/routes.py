@@ -1,6 +1,6 @@
 from . import app
 from flask import render_template, url_for, request, redirect
-from constants import Titles, Methods
+from frontend_constants import Titles, Methods
 from api import search
 
 

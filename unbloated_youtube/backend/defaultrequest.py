@@ -1,6 +1,6 @@
 import urllib.request
 import urllib.parse
-from .exceptions import NoHeaders, NoPostData
+from exceptions import NoHeaders, NoPostData
 import json
 
 
