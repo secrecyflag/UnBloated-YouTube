@@ -108,13 +108,13 @@ class Search(DefaultRequest):
         self.query = query
         self.url = Urls.YOUTUBE_SEARCH.format(innertube_api)
         
-        innertube_context.update({"query": query})
         self.innertube_context = innertube_context
         headers["Content-Type"] = "application/json"
         
         super().__init__(url=self.url, headers=headers)
 
     def search(self):
+        self.innertube_context.update({"query": self.query})
         self.post_data = json.dumps(self.innertube_context).encode()
         self.make_request(post=True)
         self.convert_json()
@@ -142,6 +142,8 @@ class Search(DefaultRequest):
         """
         primary = self.get_primary_contents()
         results = primary["sectionListRenderer"]["contents"][0]["itemSectionRenderer"]["contents"]
+        if "No results found" in str(results):
+            return False
         for result in results[:-2]:
             try:
                 result = result["videoRenderer"]
