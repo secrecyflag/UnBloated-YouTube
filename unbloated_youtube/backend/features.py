@@ -186,3 +186,7 @@ class Search(DefaultRequest):
         self.make_request(post=True)
         self.convert_json()
 
+
+    def set_query(self, query):
+        self.query = query
+
