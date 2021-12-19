@@ -1,8 +1,20 @@
 from constants import Common, RePatterns
-from features import Recommendation
 from defaultrequest import DefaultRequest
 import re
 import json
+
+
+class Recommendation:
+    """
+    class to represent a recommendation video.
+    """
+    def __init__(self, title, url):
+        self.title = title
+        self.length = 0 
+        self.url = url
+        self.date = None
+        self.views = 0
+        self.thumbnail = None
 
 
 class YtData(DefaultRequest):
