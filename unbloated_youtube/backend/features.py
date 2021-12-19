@@ -91,6 +91,11 @@ def autocomplete_search(search_link, query, headers=None):
 
 
 class Search(DefaultRequest):
+    """
+    API class to handle searching.
+    Search results could also be fetched from the ytInitialData variable, but here its more simple, 
+    which results in not having moving thumbnails as a result.
+    """
     def __init__(self, innertube_api, innertube_context, query, headers):
         self.query = query
         self.url = Urls.YOUTUBE_SEARCH.format(innertube_api)
@@ -155,8 +160,6 @@ class Search(DefaultRequest):
             if size > 1:
                 raise exceptions.InvalidSize()
             result_dict["thumbnail"] = result["thumbnail"]["thumbnails"][size]["url"]
-            if "richThumbnail" in result.keys():
-                result_dict["moving_thumbnail"] = result["richThumbnail"]["movingThumbnailRenderer"]["movingThumbnailDetails"]["thumbnails"][0]["url"]
             if "lengthText" in result.keys():
                 result_dict["length"] = result["lengthText"]["simpleText"]
             if "detailedMetadataSnippets" in result.keys():
