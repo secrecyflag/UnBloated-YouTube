@@ -4,7 +4,10 @@
     value={{ query }}
 {% endblock if_search %}
 {% block body %}
+<div class="results_class">
 {% for result in results(query) %}
-<p>{{ result }}</p>
+    <img src="{{ result['thumbnail'] }}" width="360" height="202">
+    <p>{{ result }}</p>
 {% endfor %}
+</div>
 {% endblock body %}
