@@ -138,6 +138,7 @@ class Search(DefaultRequest):
                 continue
             result_dict = {}
             result_dict["videoid"] = result["videoId"]
+            result_dict["url"] = Urls.YOUTUBE_URL + "/watch?v=" + result["videoId"]
             result_dict["title"] = result["title"]["runs"][0]["text"]
             result_dict["pfp_url"] = result["channelThumbnailSupportedRenderers"]["channelThumbnailWithLinkRenderer"]["thumbnail"]["thumbnails"][0]["url"]
             result_dict["name"] = result["ownerText"]["runs"][0]["text"]
