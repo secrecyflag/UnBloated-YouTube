@@ -7,7 +7,21 @@
     border: 1px solid black;
 }
 
-.results_class {
+.results {
     position: relative;
-    left: 100px;
+    left: 200px;
+}
+
+#profile_picture {
+    border-radius: 50%;
+}
+
+.thumbnail {
+    position: relative;
+    float: left;
+    padding: 0 20px 0 0;
+}
+
+.video-metadata {
+    left: 70px;
 }
