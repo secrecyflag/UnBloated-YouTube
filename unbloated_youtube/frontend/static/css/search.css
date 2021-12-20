@@ -25,3 +25,12 @@
 .video-metadata {
     left: 70px;
 }
+
+a {
+    text-decoration: none;
+}
+
+br {
+    margin-bottom: 30px;
+}
+

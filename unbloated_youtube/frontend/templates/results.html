@@ -12,17 +12,16 @@
         </a>
     </div>
     <div class="video-metadata">
-        <p style="font-size: 20px;">{{ result['title'] }} </p>
-        <p style="font-size: 15px;">{{ result['views'] + "  " + result['date']}}</p>
+        <a href="">  <!--Also here-->
+            <p style="font-size: 20px;">{{ result['title'] }} </p>
+            <p style="font-size: 15px;">{{ result['views'] + "  " + result['date']}}</p>
+        </a>
        <img src="{{ result['pfp_url'] }}" style="border-radius: 50%;" id="profile_picture">
 
         <p style="font-size: 15px;"><b>{{ result['name'] }}</b></p>
         <br>
-        <p style="font-size: 15px;">{{ result['small_description'] }}</p>
+        <p style="font-size: 15px;color: #424242;">{{ result['small_description'] }}</p>
     </div>
-    <br>
-    <br>
-    <br>
     <br>
 {% endfor %}
 </div>
