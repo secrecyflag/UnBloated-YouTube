@@ -35,7 +35,7 @@ class YtConfig(DefaultRequest):
             self.config = re.search(RePatterns.CONFIG_PATTERN, self.result).group(0)
             self.config = self.config.replace(Common.VAR_YTCONFIG, "").strip()
             self.config = self.config.replace("=", "", 1).strip()
-            self.config = self.config.replace(";var", "")
+            self.config = self.config.replace(";</", "")
             self.config = json.loads(self.config)
         if self.more:  # if requested for additional information
             additional = re.search(RePatterns.YTCFG_MORE, self.result).group(0)
