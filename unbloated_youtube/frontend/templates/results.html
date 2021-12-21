@@ -6,15 +6,19 @@
 {% block body %}
 <div class="results">
 {% for result in results(query) %}
-    <div class="thumbnail" action="/">
-        <a href="">  <!--TODO: update href when completing video player-->
+    <div class="thumbnail" action="/watch?v={{ result["videoid"] }}">
+        <a href="/watch?v={{ result["videoid"] }}">
             <img src="{{ result['thumbnail'] }}" width="360" height="202">
         </a>
     </div>
     <div class="video-metadata">
-        <a href="">  <!--Also here-->
+        <a href="watch?v={{ result["videoid"] }}">
             <p style="font-size: 20px;">{{ result['title'] }} </p>
-            <p style="font-size: 15px;">{{ result['views'] + "  " + result['date']}}</p>
+            {% if "date" in result.keys() %}
+                <p style="font-size: 15px;">{{ result['views'] + "  " + result['date']}}</p>
+            {% else %}
+                <p style="font-size: 15px;">{{ result['views']}}</p>
+            {% endif %}
         </a>
        <img src="{{ result['pfp_url'] }}" style="border-radius: 50%;" id="profile_picture">
 
