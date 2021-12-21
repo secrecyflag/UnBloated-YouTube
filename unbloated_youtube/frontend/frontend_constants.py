@@ -1,7 +1,7 @@
 
 class Titles:
     NAME = "UnBloated YouTube"
-    INDEX = ""
+    BLANK = ""
     ABOUT = "About"
     RESULTS = "Results"
 
