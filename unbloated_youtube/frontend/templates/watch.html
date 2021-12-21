@@ -1,0 +1,10 @@
+{% extends "defaultlayout.html" %}
+{% block body %}
+    <div class="watch">
+        <video controls autoplay poster autobuffer>
+            {% for url in fetch_video("https://www.youtube.com/watch?v=" + video_id)["video"] %}
+                <source src="{{ url }}">
+            {% endfor %}
+        </video>
+    </div> 
+{% endblock body %}
