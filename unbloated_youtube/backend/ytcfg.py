@@ -89,10 +89,13 @@ class YtConfig(DefaultRequest):
 
     def get_urls_by_quality(self, quality):
         self.basic_exception_check()
-        urls = []
+        urls = {"video": [], "audio": []}
         for format_ in self.get_adaptiveformats():
-            if format_["qualityLabel"] == quality:
-                urls.append(format_["url"])
+            if "qualityLabel" in format_.keys():  # if its mp4
+                if format_["qualityLabel"] == quality:
+                    urls["video"].append(format_["url"]) 
+            else:
+                urls["audio"].append(format_["url"])  # else its audio
         return urls if len(urls) > 0 else False 
     
     def get_qualities(self):
