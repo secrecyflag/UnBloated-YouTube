@@ -17,3 +17,8 @@ def results():
         query = request.form["query"]
     return render_template("results.html", title=Titles.RESULTS, query=query, results=search.search_results)
 
+
+@app.route("/watch", methods=[Methods.GET])
+def watch():
+    return render_template("watch.html", title=Titles.BLANK, video_id=request.args["v"], fetch_video=fetch_video.fetch_video)
+
