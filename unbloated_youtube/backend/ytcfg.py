@@ -151,6 +151,9 @@ class YtConfig(DefaultRequest):
         self.basic_exception_check(True)
         return "https://" + self.config["SBOX_SETTINGS"]["SEARCHBOX_HOST_OVERRIDE"] + "/complete/search?client=youtube&q={0}"
 
+    def set_url(self, url):
+        self.url = url
+
     def basic_exception_check(self, more=False):
         """
         method to check if the majority of the other methods will work
