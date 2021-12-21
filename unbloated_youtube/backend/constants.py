@@ -21,7 +21,7 @@ class Urls:
 
 
 class RePatterns:
-    CONFIG_PATTERN = r"var ytInitialPlayerResponse\s?=\s?.*;var"
+    CONFIG_PATTERN = r"var ytInitialPlayerResponse\s?=\s?.*;</"
     CLEN_PATTERN = r"clen=[0-9]*"
     DATA_PATTERN = r"var ytInitialData\s?=\s?.*;</script"
     YTCFG_MORE = r"ytcfg\.set\(\{.*\}\);\s"
