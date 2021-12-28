@@ -20,7 +20,7 @@ class DefaultRequest:
         if start:
             self.make_request()
 
-    def make_request(self, post=False):
+    def make_request(self, post=False, url=None):
         if self.headers is None:
             raise NoHeaders()
         if post:
@@ -34,8 +34,19 @@ class DefaultRequest:
         if "content-type" in self.headers.keys() or "Content-Type" in self.headers.keys():
             key = "Content-Type" if "Content-Type" in self.headers.keys() else "content-type"
             self.req.add_header("Content-Type", self.headers[key])
-        self.req = urllib.request.urlopen(self.req)
-        self.result = self.req.read().decode("utf-8")
+        if url is None:
+            self.req = urllib.request.urlopen(self.req)
+            self.result = self.req.read().decode("utf-8")
+        else:
+            req = urllib.request.Request(url) 
+            req.add_header("User-Agent", user_agent)
+            req = urllib.request.urlopen(req)
+            result = req.read().decode("utf-8")
+            return result
+
+    @staticmethod
+    def unquote_url(url):
+        return urllib.parse.unquote(url)
 
     def get_request(self):
         return self.req
