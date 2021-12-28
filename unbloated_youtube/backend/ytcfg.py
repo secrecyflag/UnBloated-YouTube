@@ -1,8 +1,10 @@
 import re
-from .constants import Common, RePatterns
+from .constants import Common, RePatterns, Urls
 from .defaultrequest import DefaultRequest
 import json
 import exceptions
+import signature_decipher
+# TODO: BETTER DOCS
 
 
 class YtConfig(DefaultRequest):
@@ -23,6 +25,7 @@ class YtConfig(DefaultRequest):
         self.config = {}
         self.more = more
         self.is_video = is_video
+        self.base_js = None
 
     def getconfig(self):
         """
@@ -91,11 +94,17 @@ class YtConfig(DefaultRequest):
         self.basic_exception_check()
         urls = {"video": [], "audio": []}
         for format_ in self.get_adaptiveformats():
+            if "signatureCipher" in format_.keys():
+                signature_cipher = format_["signatureCipher"]
+                signature_cipher = self.unquote_url(signature_cipher)
+                url = self.decrypt_signature_and_pass_url(signature_cipher)
+            else:
+                url = format_["url"]
             if "qualityLabel" in format_.keys():  # if its mp4
                 if format_["qualityLabel"] == quality:
-                    urls["video"].append(format_["url"]) 
+                    urls["video"].append(url)
             else:
-                urls["audio"].append(format_["url"])  # else its audio
+                urls["audio"].append(url)  # else its audio
         return urls if len(urls) > 0 else False 
     
     def get_qualities(self):
@@ -134,7 +143,7 @@ class YtConfig(DefaultRequest):
             else:
                 info[codec][quality] = format_["url"]
         return info
-
+    
     def get_innertube_api(self):
         self.basic_exception_check(True) 
         return self.config["INNERTUBE_API_KEY"]
@@ -166,4 +175,28 @@ class YtConfig(DefaultRequest):
         if more:
             if not self.more:
                 raise exceptions.NoAdditionalInformation()
+
+    def extract_encrypted_signature(self, text: str):
+        signature_cipher = self.unquote_url(text)
+        signature = re.search(RePatterns.SIGNATURE, signature_cipher).group()
+        return signature
+
+    def extract_url(self, text: str):
+        url = re.search(RePatterns.URL, text).group(0)
+        url = self.unquote_url(url) 
+        return url
+
+    def get_base_js(self):
+        url = Urls.YOUTUBE_URL + self.config["WEB_PLAYER_CONTEXT_CONFIGS"]["WEB_PLAYER_CONTEXT_CONFIG_ID_KEVLAR_WATCH"]["jsUrl"]
+        result = self.make_request(url=url)
+        return result
+
+    def decrypt_signature_and_pass_url(self, signature: str):
+        url = self.extract_url(signature)
+        signature = self.extract_encrypted_signature(signature)
+        if self.base_js is None:
+            self.base_js = self.get_base_js()
+        decrypted = signature_decipher.decrypt(signature=signature, js=self.base_js)
+        url += "&sig=" + decrypted
+        return url
 
