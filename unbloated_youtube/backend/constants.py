@@ -27,6 +27,14 @@ class RePatterns:
     YTCFG_MORE = r"ytcfg\.set\(\{.*\}\);\s"
     SEARCH_RESULTS = r"\[.*]"
     SEARCH_RESULTS_SUB = r"(\[|\]|,)"
+    URL = r"https://.*"
+    SIGNATURE = r"(?<=(\bs=)).*?(?=&)"
+    # SINGNATURE REGEX
+    DECIPHER_FUNCTION = r"\b[a-zA-Z0-9]*\s*=\s*function\s*\(\s*a\s*\)\s*\{a=a\.split\(\"\"\).*\};"
+    DICT_FUNCTION_NAME = r"\b[^a(?!\.)=][a-zA-Z0-9]*(?=\.)"
+    @staticmethod
+    def find_dict_functions(dict_function_name):
+        return r"(?<=\b(var)\s(" + dict_function_name + r")={)[a-zA-Z0-9]*\s*:\s*function.*[\n|\r|\r\n]?.*[\n|\r|\r\n]?.*?(})"
 
 
 class Sizes(enum.Enum):
