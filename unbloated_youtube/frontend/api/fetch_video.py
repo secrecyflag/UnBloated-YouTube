@@ -1,7 +1,7 @@
 from . import HEADERS, YTCFG_OBJ
 
 
-def fetch_video(video_url, quality="720p"):
+def fetch_video(video_url, quality="480p"):
     """
     Returning video googlevideo URL.
 
@@ -13,5 +13,6 @@ def fetch_video(video_url, quality="720p"):
     YTCFG_OBJ.make_request()
     YTCFG_OBJ.getconfig()
     YTCFG_OBJ.is_video = False
-    return YTCFG_OBJ.get_urls_by_quality(quality) 
+    urls = YTCFG_OBJ.get_urls_by_quality(quality) 
+    return urls
 
