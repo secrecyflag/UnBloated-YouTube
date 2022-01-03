@@ -1,10 +1,36 @@
 {% extends "defaultlayout.html" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
+{% endblock head %}
 {% block body %}
     <div class="watch">
-        <video controls autoplay poster autobuffer>
-            {% for url in fetch_video("https://www.youtube.com/watch?v=" + video_id)["video"] %}
+        <video id="mainvideo" width="900" height="500" preload="auto" controls>
+            {% for url in urls["video"] %}
                 <source src="{{ url }}">
             {% endfor %}
+            Your browser does not support the video tag.
         </video>
-    </div> 
+        <audio id="mainaudio"> 
+            {% for url in urls["audio"] %}
+                <source src="{{ url }}">
+            {% endfor %}
+            Your browser does not support the audio tag.
+        </audio>
+    </div>
+    <div class="volume">
+        <input type="range" min="0" max="1" value="0.2" step="0.01" id="volume_slider">
+    </div>
+    
+    <form action="/watch?v={{ video_id }}", method="post" id="quality_form">
+        <input type="submit">
+    </form>
+
+    <div class="quality">
+        <select name="quality_select" form="quality_form">
+            {% for quality in qualities %}
+                <option value="{{ quality }}">{{ quality }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <script src="{{ url_for("static", filename="js/player.js") }}"></script>
 {% endblock body %}

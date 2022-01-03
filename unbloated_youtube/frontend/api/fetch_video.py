@@ -13,6 +13,7 @@ def fetch_video(video_url, quality="480p"):
     YTCFG_OBJ.make_request()
     YTCFG_OBJ.getconfig()
     YTCFG_OBJ.is_video = False
-    urls = YTCFG_OBJ.get_urls_by_quality(quality) 
-    return urls
+    urls = YTCFG_OBJ.get_urls_by_quality(quality)
+    qualities = YTCFG_OBJ.get_qualities()
+    return urls, qualities
 
