@@ -71,24 +71,20 @@ class YtConfig(DefaultRequest):
     def get_duration(self, type_=None):
         self.basic_exception_check()
         duration = int(self.get_adaptiveformats()[0][Common.DURATION])
-        if type_ == Common.SECONDS:
-            return duration // 1000
-        elif type_ == Common.MINUTES:
+        if type_ == Common.MINUTES:
             seconds = duration // 1000
             minutes = 0
             while seconds >= 60:
                 minutes += 1
                 seconds -= 60
             return minutes, seconds
+        else:
+            return int(duration // 1000)
         return duration
     
     def get_quality(self, index):
         self.basic_exception_check()
         return self.get_adaptiveformats()[index]["qualityLabel"]
-
-
-    def is_age_restricted(self) -> bool:
-        return "signatureCipher" in self.get_adaptiveformats()[0].keys()
 
     def get_urls_by_quality(self, quality):
         self.basic_exception_check()
@@ -118,7 +114,10 @@ class YtConfig(DefaultRequest):
         for format_ in self.get_adaptiveformats():
             if "audio" in format_["mimeType"]:
                 continue
-            qualities.append(format_["qualityLabel"])
+            quality = format_["qualityLabel"]
+            if quality in qualities:
+                continue
+            qualities.append(quality)
         return qualities
 
     def get_basic(self):

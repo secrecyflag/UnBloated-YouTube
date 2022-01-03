@@ -14,6 +14,7 @@ class Common:
     YOUTUBE_URL = "https://www.youtube.com"
     YOUTUBE_NEXT_URL = YOUTUBE_URL + "/youtubei/v1/next?key={0}"
 
+
 class Urls:
     YOUTUBE_URL = "https://www.youtube.com"
     YOUTUBE_NEXT_URL = YOUTUBE_URL + "/youtubei/v1/next?key={0}"
