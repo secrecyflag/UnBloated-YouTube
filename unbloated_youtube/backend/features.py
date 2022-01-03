@@ -155,8 +155,11 @@ class Search(DefaultRequest):
                 else:
                     result_dict["views"] = result["shortViewCountText"]["runs"][0]["text"]
             else:
-                result_dict["is_live"] = True 
-                result_dict["views"] = result["viewCountText"]["runs"][0]["text"]
+                if "viewCountText" in result.keys():  # if live
+                    result_dict["is_live"] = True
+                    result_dict["views"] = result["viewCountText"]["runs"][0]["text"]
+                else:  # if premiere video (still not published)
+                    result_dict["is_premiere"] = True
             if size > 1:
                 raise exceptions.InvalidSize()
             result_dict["thumbnail"] = result["thumbnail"]["thumbnails"][size]["url"]
