@@ -2,6 +2,8 @@ import urllib.request
 import exceptions
 import re
 from constants import RePatterns, Common
+import subprocess
+import threading
 
 
 class Stream:
@@ -24,53 +26,70 @@ class Stream:
         self.duration = self.config.get_duration()
         self.auto = auto  # TODO: add algorithm to determine the best url/quality based on the internet speed
         self.headers = headers
+        self._start_range = 0
+        self.__video_file = None
+        self.__current_position = 0
+
+    @property
+    def start_range(self):
+        return self._start_range
+    
+    @start_range.setter
+    def range(self, range_):
+        self._start_range = range_
+
+    @property
+    def current_position(self):
+        pass
+
+    @current_position.setter
+    def current_position(self, position):
+        self.__current_position = position
 
     @staticmethod
-    def get_best_url(data: list, quality) -> str:
+    def get_best_url(urls: list) -> str:
         """
-        sometimes there could be the same quality with multiple googlevideo urls, 
-        this function will choose the url according to codec. AV1 is the best in terms of quality, but takes a little bit more resources 
-        and VP9 is the standard on google platforms.
         
-        :param data: dict: {video/audio: {codec: {quality: url}/url}}
-        :return: final URL
+        :param urls: dict: {video: [urls],
+                            audio: [urls]}
+        :return: (video url, audio urls)
         """
-        if len(data) == 1:
-            return urls[0]
-        url = None
-        for codec in data['video'].keys():
-            codec_dict = data['video'][codec]
-            if quality not in codec_dict.keys():
-                continue
-            if "vp9" in codec:  # VP9 is preferred
-                return codec_dict[quality]
-            else:  # if for some reason there is no VP9 encoding
-                url = codec_dict[quality]
-        if url is None:  # if there is no such quality
-            raise exceptions.NoSuchVideoQuality()
-        return url
+        video_url = urls["video"][0]  # Temporary
+        audio_url = urls["audio"][0]  # Temporary
+        return video_url, audio_url 
         
-    def __iter__(self):
-        for buffer in self.stream():
-            yield buffer
-
-    def stream(self, parallel=False):
+    def stream(self, duration, quality, path=None):
         """
         loads approx 7MB of bytes, and yields it
     
+        :param path: if specified a path, this method will create a new file, and
+        append to it the fetched data. most include a name and a file format (e.g. x.mp4)
         :yield: bytes object
         """
-        url = self.get_best_url(self.config.get_basic(), self.quality)  # getting the best URL for streaming
-        len_bytes = int(re.search(RePatterns.CLEN_PATTERN, url).group(0).replace("clen=", ""))  # filesize/contentLength in bytes
-        start_range = 0
-        end_range = 0
-        while end_range < len_bytes:
-            end_range = min(len_bytes, start_range + Common.RANDOM_RANGE)
-            stream_url = url + "&range={0}-{1}".format(start_range, end_range)  # adding range payload
-            req = urllib.request.Request(stream_url)
-            req.add_header("user-agent", self.headers['user-agent'])
-            response = urllib.request.urlopen(req)
-            chunk = response.read()
-            yield chunk
-            start_range += len(chunk)
-        
+        self.duration = duration
+        url = self.get_best_url(self.config.get_urls_by_quality(quality))
+        len_bytes = int(re.search(RePatterns.CLEN_PATTERN, url[0]).group(0).replace("clen=", ""))  # filesize/contentLength in bytes
+        if path is None:
+            return True
+            end_range = 0
+            while end_range < len_bytes:
+                    end_range = min(len_bytes, self._start_range + Common.RANDOM_RANGE)
+                    stream_url = url + "&range={0}-{1}".format(self._start_range, end_range)  # adding range payload
+                    req = urllib.request.Request(stream_url)
+                    req.add_header("user-agent", self.headers["user-agent"])
+                    response = urllib.request.urlopen(req)
+                    chunk = response.read()
+                    # yield chunk
+                    self._start_range += len(chunk)
+        else:
+            args = ["ffmpeg", "-y",
+                    "-ss", str(self.__current_position),
+                    "-headers", "user-agent: " + self.headers["User-Agent"],
+                    "-i", url[0],
+                    "-t", str(self.duration),
+                    "-c:v", "copy", "-c:a", "copy",
+                    path]
+
+            thread = threading.Thread(target=subprocess.Popen, kwargs={"args": args, "stdout": subprocess.PIPE, "stderr": subprocess.PIPE})
+            thread.start()
+
