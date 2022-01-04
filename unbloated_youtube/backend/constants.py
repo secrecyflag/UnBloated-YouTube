@@ -22,7 +22,7 @@ class Urls:
 
 
 class RePatterns:
-    CONFIG_PATTERN = r"var ytInitialPlayerResponse\s?=\s?.*;</"
+    CONFIG_PATTERN = r"(?<=\bvar\s(ytInitialPlayerResponse)\s=\s).*}(?=;(var)|(<\/))"
     CLEN_PATTERN = r"clen=[0-9]*"
     DATA_PATTERN = r"var ytInitialData\s?=\s?.*;</script"
     YTCFG_MORE = r"ytcfg\.set\(\{.*\}\);\s"

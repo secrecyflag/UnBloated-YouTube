@@ -35,10 +35,10 @@ class YtConfig(DefaultRequest):
         if self.req is None:
             return False
         if self.is_video:
-            self.config = re.search(RePatterns.CONFIG_PATTERN, self.result).group(0)
-            self.config = self.config.replace(Common.VAR_YTCONFIG, "").strip()
-            self.config = self.config.replace("=", "", 1).strip()
-            self.config = self.config.replace(";</", "")
+            self.config = re.search(RePatterns.CONFIG_PATTERN, self.result)
+            if self.config is None:
+                return False
+            self.config = self.config.group(0)
             self.config = json.loads(self.config)
         if self.more:  # if requested for additional information
             additional = re.search(RePatterns.YTCFG_MORE, self.result).group(0)
