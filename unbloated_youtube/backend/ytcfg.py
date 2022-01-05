@@ -4,13 +4,15 @@ from .defaultrequest import DefaultRequest
 import json
 import exceptions
 import signature_decipher
+import itags
 # TODO: BETTER DOCS
 
 
 class YtConfig(DefaultRequest):
     """
     Youtube config class.
-    youtube html videos has a var called: "ytInitialPlayerResponse" it has some very useful information about the video, such as url links, and quality video and so on.
+    youtube html videos has a var called: "ytInitialPlayerResponse" it has some very useful information about the video, 
+    such as url links, and quality video and so on.
 
     """
     def __init__(self, url, headers, html=None, start=False, more=False, is_video=True):
@@ -52,7 +54,7 @@ class YtConfig(DefaultRequest):
     def get_adaptiveformats(self):
         self.basic_exception_check()
         return self.config[Common.STREAMINGDATA][Common.ADAPTIVEFORMATS]
-
+    
     def get_url_quality(self):
         """
         returns url links and qualities generator
