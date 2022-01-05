@@ -54,7 +54,7 @@ class YtConfig(DefaultRequest):
     def get_adaptiveformats(self):
         self.basic_exception_check()
         return self.config[Common.STREAMINGDATA][Common.ADAPTIVEFORMATS]
-    
+
     def get_url_quality(self):
         """
         returns url links and qualities generator
@@ -208,12 +208,12 @@ class YtConfig(DefaultRequest):
         """
         EXPERIMENTAL!
 
-        This method will choose the urls that are the most optimized
+        This method will choose the urls that are the most usable 
         for streaming, without getting any lags or buffer issues, 
         like video gets stuck every 0.1 seconds.
 
         The most best video codecs from left to right: AV1, VP9, H264.
-        The first two are the most promising one in terms of efficiancy.
+        The first two are the most promising one in terms of efficiency.
         H264 codec seems to be more laggy and sometimes even not usable than the others.
 
         :param urls: googlevideo urls

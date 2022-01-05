@@ -1,5 +1,5 @@
 """
-`itag` in YouTube is representing the quality the video is streaming in.
+`itag` in YouTube is representing the quality a video is streaming on.
 Credits: AgentOak: "https://gist.github.com/AgentOak/34d47c65b1d28829bb17c24c04a0096f".
 HFR = High Frame Rate
 """
