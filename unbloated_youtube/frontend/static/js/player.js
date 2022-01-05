@@ -10,18 +10,16 @@ audio.volume = 0.2;
 volume.addEventListener("mousemove", (e)=> {  // volume slider
     audio.volume = e.target.value;            
 })
-video.addEventListener("pause", (e)=> {  // if the video is paused, then:
-    video.pause();
+video.addEventListener("pause", (e)=> {  // if the video is paused
     audio.pause();
 })
 video.addEventListener("play", (e)=> {  // if the video is on, then:
-    video.play();
     audio.play();
 })
 video.addEventListener("seeked", (e)=> {  // if the user changed the position in video, update also in the audio element
     audio.currentTime = video.currentTime;
 })
-video.addEventListener("waiting", (e)=> {
+video.addEventListener("waiting", (e)=> {  // if the video needs to buffer
     audio.currentTime = video.currentTime;
 })
 
