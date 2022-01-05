@@ -36,6 +36,7 @@ class RePatterns:
     @staticmethod
     def find_dict_functions(dict_function_name):
         return r"(?<=\b(var)\s(" + dict_function_name + r")={)[a-zA-Z0-9]*\s*:\s*function.*[\n|\r|\r\n]?.*[\n|\r|\r\n]?.*?(})"
+    ITAG_URL = r"(?<=itag=)\d+"
 
 
 class Sizes(enum.Enum):
