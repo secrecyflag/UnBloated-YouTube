@@ -100,7 +100,7 @@ class YtConfig(DefaultRequest):
             else:
                 url = format_["url"]
             if "qualityLabel" in format_.keys():  # if its mp4
-                if format_["qualityLabel"] == quality:
+                if format_["qualityLabel"] in quality:
                     urls["video"].append(url)
             else:
                 urls["audio"].append(url)  # else its audio
@@ -203,45 +203,47 @@ class YtConfig(DefaultRequest):
         decrypted = signature_decipher.decrypt(signature=signature, js=self.__base_js)
         url += "&sig=" + decrypted
         return url
-
-    def optimize(self, urls: list):
+    
+    @staticmethod
+    def optimize(urls: list):
         """
         EXPERIMENTAL!
 
         This method will choose the urls that are the most usable 
-        for streaming, without getting any lags or buffer issues, 
-        like video gets stuck every 0.1 seconds.
-
-        The most best video codecs from left to right: AV1, VP9, H264.
+        for streaming, without getting any lags or buffer issues.
+        
+        The best video codecs from left to right: AV1, VP9, H264.
         The first two are the most promising one in terms of efficiency.
         H264 codec seems to be more laggy and sometimes even not usable than the others.
 
         :param urls: googlevideo urls
         :return: False if self.optimize variable is False
         """
-        if not self.optimize:
-            return False 
-        preferred_urls = {"AV1": [], "VP9": [], "H264": []}
+        AV1 = [[], [], []]
+        VP9 = [[], [], []]
+        H264 = [[], []]
         for url in urls:
             itag = re.search(RePatterns.ITAG_URL, url)
             if itag is None:
                 continue
             itag = int(itag.group(0))
             if itag in itags.H264:
-                preferred_urls["H264"].append(url)
+                H264[1].append(url)
             elif itag in itags.H264_HFR:
-                preferred_urls["H264"].insert(0, url)
+                H264[0].append(url)
             elif itag in itags.VP9:
-                preferred_urls["VP9"].append(url)
+                VP9[2].append(url)
             elif itag in itags.VP9_HFR:
-                preferred_urls["VP9"].insert(1, url)
+                VP9[1].append(url)
             elif itag in itags.VP9_HDR_HFR:
-                preferred_urls["VP9"].insert(0, url)
+                VP9[0].append(url)
             elif itag in itags.AV1:
-                preferred_urls["AV1"].append(url)
+                AV1[2].append(url)
             elif itag in itags.AV1_HFR:
-                preferred_urls["AV1"].insert(1, url)
+                AV1[1].append(url)
             elif itag in itags.AV1_HDR_HFR:
-                preferred_urls["AV1"].insert(0, url)
-        return preferred_urls["AV1"] + preferred_urls["VP9"] + preferred_urls["H264"]
+                AV1[0].append(url)
+        return AV1[0] + AV1[1] + AV1[2] + \
+               VP9[0] + VP9[1] + VP9[2] + \
+               H264[0] + H264[1]
 
