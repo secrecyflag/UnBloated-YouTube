@@ -75,7 +75,8 @@ def get_dict_name(body: str):
 
     :return:
     """
-    return re.search(RePatterns.DICT_FUNCTION_NAME, body).group() # removing the dot
+    dict_name = re.search(RePatterns.DICT_FUNCTION_NAME, body).group()
+    return dict_name
 
 
 def get_dict_functions(js: str) -> dict:
@@ -88,6 +89,7 @@ def get_dict_functions(js: str) -> dict:
     functions = {}
     dict_name = get_dict_name(get_initial_function_body(js))
     pattern = RePatterns.find_dict_functions(dict_name)
+    pattern = pattern.replace("$", "\$")  # if there is $ char in dictionary name
     functions_list = re.search(pattern, js)
     if functions is not None:
         # reformatting to a dictionary

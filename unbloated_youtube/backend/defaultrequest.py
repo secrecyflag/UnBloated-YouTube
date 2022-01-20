@@ -19,7 +19,7 @@ class DefaultRequest:
             self.post_data = post_data.encode()
         if start:
             self.make_request()
-
+    
     def make_request(self, post=False, url=None):
         if self.headers is None:
             raise NoHeaders()

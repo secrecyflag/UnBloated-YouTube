@@ -32,7 +32,7 @@ class RePatterns:
     SIGNATURE = r"(?<=(\bs=)).*?(?=&)"
     # SINGNATURE REGEX
     DECIPHER_FUNCTION = r"\b[a-zA-Z0-9]*\s*=\s*function\s*\(\s*a\s*\)\s*\{a=a\.split\(\"\"\).*\};"
-    DICT_FUNCTION_NAME = r"\b[^a(?!\.)=][a-zA-Z0-9]*(?=\.)"
+    DICT_FUNCTION_NAME = r"[^;a\(?!\.\)=]\$?[a-zA-Z0-9]*(?=\.)"
     @staticmethod
     def find_dict_functions(dict_function_name):
         return r"(?<=\b(var)\s(" + dict_function_name + r")={)[a-zA-Z0-9]*\s*:\s*function.*[\n|\r|\r\n]?.*[\n|\r|\r\n]?.*?(})"
