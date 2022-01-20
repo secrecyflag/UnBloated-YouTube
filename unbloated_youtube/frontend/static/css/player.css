@@ -1,10 +1,9 @@
 .quality {
-    position: absolute;
-    top: 61%;
+    position: relative;
     left: 10%;
 }
 
 #quality_form {
-    position: absolute;
-    left: 11%;
+    position: relative;
+    left: 0px;
 }
