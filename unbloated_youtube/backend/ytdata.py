@@ -23,8 +23,9 @@ class YtData(DefaultRequest):
     it has information about count of subscribers, likes, recommandations, and more.
 
     """
-    def __init__(self, url, headers, html=None, start=False):
+    def __init__(self, url, headers, html=None, start=False, is_video=False):
         super().__init__(url, headers, html, start)
+        self.is_video = is_video
 
     def getdata(self):
         """
@@ -32,11 +33,13 @@ class YtData(DefaultRequest):
  
         :return: dict
         """
-        self.result = re.search(RePatterns.DATA_PATTERN, self.result).group(0)
-        self.result = self.result.replace(Common.VAR_YTDATA, "").strip()
-        self.result = self.result.replace("=", "", 1).strip()
-        self.result = self.result.replace(";</script", "")
-        self.convert_json()
+        if self.is_video:
+            # TODO: optimize regex
+            self.result = re.search(RePatterns.DATA_PATTERN, self.result).group(0)
+            self.result = self.result.replace(Common.VAR_YTDATA, "").strip()
+            self.result = self.result.replace("=", "", 1).strip()
+            self.result = self.result.replace(";</script", "")
+            self.convert_json()
         return self.result
   
     def get_primary_info(self):
