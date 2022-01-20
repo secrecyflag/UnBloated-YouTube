@@ -60,6 +60,9 @@ class DefaultRequest:
     def get_headers(self):
         return self.headers
 
+    def set_url(self, url):
+        self.url = url
+
     def convert_json(self):
         """
         converting `self.result` to json
