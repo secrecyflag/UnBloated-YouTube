@@ -18,7 +18,9 @@ coa = function(a) {
     lC.ln(a,19);
     return a.join("")
 };
-
+...
+...
+...
 var lC = {
     fA:function(a,b) {  // splice
         a.splice(0,b)
