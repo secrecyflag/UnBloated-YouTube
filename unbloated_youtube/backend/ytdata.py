@@ -72,7 +72,7 @@ class YtData(DefaultRequest):
 
     def get_views(self, short=True):
         """
-        short view count, or full view count
+        :param short: short view count, or full view count
         """
         if not short:
             return self.get_primary_info()['viewCount']['videoViewCountRenderer']['viewCount']['simpleText']
@@ -120,6 +120,17 @@ class YtData(DefaultRequest):
             if 'simpleText' in recommend['viewCountText'].keys():
                 obj.views = recommend['viewCountText']['simpleText']
             yield obj
+
+    def get_video_info(self):
+        info = {"title": self.get_title()}
+        info["description"] = self.get_description()
+        info["views"] = self.get_views(short=False)
+        info["date"] = self.get_date()
+        info["channelName"] = self.get_channel_name()
+        info["channelProfilePicture"] = self.get_publisher_pfp()
+        info["subscribers"] = self.get_subscribers()
+        return info
+
 
     def get_continuation_token_comments(self):
         """

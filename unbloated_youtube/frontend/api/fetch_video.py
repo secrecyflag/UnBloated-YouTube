@@ -14,18 +14,19 @@ def fetch_video(video_url, quality):
     YTCFG_OBJ.is_video = False
     qualities = YTCFG_OBJ.get_qualities()
     if quality not in qualities:  # if the video doesn't have this quality (works also for "best" quality)
-        quality = qualities[-1]
+        quality = qualities[0]
     urls = YTCFG_OBJ.get_urls_by_quality(quality)
         
     return urls, qualities
 
 
-def get_video_title(url=None):
+
+def get_video_info(url=None):
     """
+    Function to get basic video information such at the title and description.
 
     :param url: Video url. Don't have to specify if we haven't requested a new video,
     so we can save requests.
-    :return: video title
     """
     if url is not None:
         YTDATA_OBJ.is_video = True
@@ -33,4 +34,6 @@ def get_video_title(url=None):
         YTDATA_OBJ.make_request()
         YTDATA_OBJ.getdata()
         YTDATA_OBJ.is_video = False 
-    return YTDATA_OBJ.get_title()
+    info = YTDATA_OBJ.get_video_info()
+    return info
+

@@ -27,8 +27,8 @@ def watch():
     video_id = request.args["v"]
     url = "https://www.youtube.com/watch?v=" + video_id
     urls, qualities = fetch_video.fetch_video(url, quality=quality)
-    video_title = fetch_video.get_video_title(url=url)
-    return render_template("watch.html", video_id=video_id, title=Titles.BLANK, urls=urls, video_title=video_title, qualities=qualities)
+    video_info = fetch_video.get_video_info(url=url)
+    return render_template("watch.html", video_id=video_id, title=Titles.BLANK, urls=urls, video_info=video_info, qualities=qualities)
 
 
 @app.route("/settings", methods=[Methods.GET, Methods.POST])

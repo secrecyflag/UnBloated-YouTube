@@ -6,7 +6,6 @@ class Titles:
     RESULTS = "Results"
     SETTINGS = "Settings"
 
-
 class Methods:
     POST = "POST"
     GET = "GET"
