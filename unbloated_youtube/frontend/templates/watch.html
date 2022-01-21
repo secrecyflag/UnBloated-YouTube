@@ -1,6 +1,7 @@
 {% extends "defaultlayout.html" %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/watch.css') }}">
 {% endblock head %}
 {% block body %}
     <div class="watch">
@@ -17,7 +18,8 @@
             Your browser does not support the audio tag.
         </audio>
     </div>
-    <h2>{{ video_title }}</h2>
+    <h2>{{ video_info['title'] }}</h2>
+    <p>{{ video_info['views'] }} • {{ video_info['date'] }}</p>
     <div class="player">
         <select name="quality_select" form="quality_form">
             {% for quality in qualities %}
@@ -29,8 +31,21 @@
             <input type="submit">
         </form> 
     </div>
-
+    <br>
+    <hr width="1210px;">
+    <div class="channelInfo">
+        <img src="{{ video_info['channelProfilePicture'] }}" style="border-radius: 50%;float: left;">
+        <div class="channelName">
+            <p>{{ video_info['channelName'] }}</p>
+        </div>
+        <div class="subscribers">
+            <p style="color: #424242;">{{ video_info['subscribers'] }}</p>
+        </div>
+        <div class="description">
+            <p>{{ video_info['description'] }}</p>
+        </div>
     </div>
+    <hr width="1210px;">
 
     <script src="{{ url_for("static", filename="js/player.js") }}"></script>
 {% endblock body %}

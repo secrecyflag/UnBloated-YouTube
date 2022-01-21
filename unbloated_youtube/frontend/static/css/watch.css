@@ -1,6 +1,15 @@
-
-video {
-    position: absolute;
-    left: 5%;
-    top: 10%;
+.channelInfo {
+    width: 1240px;
 }
+.description {
+    white-space: pre-wrap;
+    text-align: justify;
+}
+.channelName {
+    position: relative;
+}
+hr {
+    width: 1240px;
+    margin-left: 0;
+}
+
