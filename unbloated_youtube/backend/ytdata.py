@@ -1,4 +1,4 @@
-from constants import Common, RePatterns
+from constants import Common, RePatterns, Urls
 from defaultrequest import DefaultRequest
 import re
 import json
@@ -23,16 +23,18 @@ class YtData(DefaultRequest):
     it has information about count of subscribers, likes, recommandations, and more.
 
     """
-    def __init__(self, url, headers, html=None, start=False, is_video=False):
-        super().__init__(url, headers, html, start)
+    def __init__(self, url, headers, start=False, is_video=False):
+        super().__init__(url, headers, start)
         self.is_video = is_video
 
-    def getdata(self):
+    def getdata(self, html=None):
         """
         gets youtube data variable, and transforms it into a dictionary
  
         :return: dict
         """
+        if html is not None:
+            self.result = html
         if self.is_video:
             # TODO: optimize regex
             self.result = re.search(RePatterns.DATA_PATTERN, self.result).group(0)
@@ -60,7 +62,7 @@ class YtData(DefaultRequest):
         return self.get_secondary_info()['owner']['videoOwnerRenderer']['title']['runs'][0]['text']
 
     def get_channel_url(self):
-        return Common.YOUTUBE_URL + self.get_secondary_info()['owner']['videoOwnerRenderer']['title']\
+        return Urls.YOUTUBE_URL + self.get_secondary_info()['owner']['videoOwnerRenderer']['title']\
                                                              ['runs'][0]['navigationEndpoint']\
                                                              ['browseEndpoint']['canonicalBaseUrl']
 
@@ -109,7 +111,7 @@ class YtData(DefaultRequest):
                 break 
             recommend = recommend['compactVideoRenderer']
             title = recommend['title']['simpleText']
-            url = Common.YOUTUBE_URL + recommend['navigationEndpoint']['commandMetadata']\
+            url = Urls.YOUTUBE_URL + recommend['navigationEndpoint']['commandMetadata']\
                                                 ['webCommandMetadata']['url']
             obj = Recommendation(title, url)
             obj.thumbnail = recommend['thumbnail']['thumbnails'][0]['url']

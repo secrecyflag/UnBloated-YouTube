@@ -11,8 +11,7 @@ class Common:
     MINUTES = "min"
     # 5KB, used to load video buffer can be any bytes size, but it will take longer to load
     RANDOM_RANGE = 524288 
-    YOUTUBE_URL = "https://www.youtube.com"
-    YOUTUBE_NEXT_URL = YOUTUBE_URL + "/youtubei/v1/next?key={0}"
+    HDR = "HDR"
 
 
 class Urls:

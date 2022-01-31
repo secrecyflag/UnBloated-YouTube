@@ -58,7 +58,7 @@ class Comments(DefaultRequest):
             yield comment_dict
 
     def get_continuation_token(self):
-        return self.comments[len(self.comments) - 1]["continuationItemRenderer"]["continuationEndpoint"]["continuationCommand"]["token"]
+        return self.comments[-1]["continuationItemRenderer"]["continuationEndpoint"]["continuationCommand"]["token"]
 
     def get_more_comments(self):
         self.innertube_context["continuation"] = self.get_continuation_token()

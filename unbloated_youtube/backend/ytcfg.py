@@ -15,7 +15,7 @@ class YtConfig(DefaultRequest):
     such as url links, and quality video and so on.
 
     """
-    def __init__(self, url, headers, html=None, start=False, more=False, is_video=True):
+    def __init__(self, url, headers, start=False, more=False, is_video=True):
         """
         
         :param start: make request right away when creating object
@@ -23,20 +23,22 @@ class YtConfig(DefaultRequest):
         which can be found in `ytcfg.set...` calls.
         :param is_not_video: specifying if we're not in any YouTube video. useful if there is no ytInitialPlayerResponse variable
         """
-        super().__init__(url, headers, html, start)
+        super().__init__(url, headers, start)
         self.config = {}
         self.more = more
         self.is_video = is_video
         self.__base_js = None
         self.optimized = True 
 
-    def getconfig(self):
+    def getconfig(self, html=None):
         """
         gets youtube config variable
         :return: dict 
         """
         if self.req is None:
             return False
+        if html is not None and type(html) is str:
+            self.result = html
         if self.is_video:
             self.config = re.search(RePatterns.CONFIG_PATTERN, self.result)
             if self.config is None:

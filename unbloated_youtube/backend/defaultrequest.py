@@ -9,11 +9,11 @@ class DefaultRequest:
     class to represent html/js tags/variables.
 
     """
-    def __init__(self, url, headers=None, html=None, start=False, post_data=None):
+    def __init__(self, url, headers=None, start=False, post_data=None):
         self.url = url
         self.req = None
         self.headers = headers
-        self.result = html
+        self.result = None
         self.post_data = post_data
         if self.post_data is not None:
             self.post_data = post_data.encode()
