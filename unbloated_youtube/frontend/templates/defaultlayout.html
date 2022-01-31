@@ -10,6 +10,15 @@
         </title>
         <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+        <style>
+            body {
+                background-color: {{ '#000000' if dark_mode else '#f0f0f0' }};
+            }
+            p, h1, h2, h3, h4, h5, label {
+                color: {{ '#ffffff' if dark_mode else '#000000' }}; 
+            }
+        </style>
+
         {% block head %}
         {% endblock head %}
         <meta charset="UTF-8">

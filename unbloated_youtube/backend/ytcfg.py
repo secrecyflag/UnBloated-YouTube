@@ -110,10 +110,11 @@ class YtConfig(DefaultRequest):
             urls["video"] = self.optimize(urls["video"])
         return urls if len(urls) > 0 else False 
     
-    def get_qualities(self):
+    def get_qualities(self, hdr=False):
         """
         returns the available qualities for watching this video
 
+        :param hdr: include HDR qualities or not
         :return: available qualities, list
         """
         self.basic_exception_check()
@@ -122,8 +123,10 @@ class YtConfig(DefaultRequest):
             if "audio" in format_["mimeType"]:
                 continue
             quality = format_["qualityLabel"]
-            if quality in qualities:
+            if quality in qualities or (Common.HDR in quality and not hdr):
                 continue
+            if len(qualities) > 0 and qualities[-1] in quality:
+                qualities.remove(qualities[-1])
             qualities.append(quality)
         return qualities
 

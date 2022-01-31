@@ -21,6 +21,13 @@ class Settings:
             self.settings[key] = settings[key][0]
         self.write()
 
+    def get_dark_mode(self):
+        return self.settings["darkMode"] if "darkMode" in self.settings.keys() else None
+
+    def get_hdr(self):
+        return self.settings["HDR"] if "HDR" in self.settings.keys() else None
+
+
     def open(self):
         self.file = open(self.path)
 
