@@ -40,9 +40,11 @@ def watch():
                                               hdr=True if SETTINGS_OBJ.get_hdr() == "1" else False)
     video_src = fetch_video.get_video_src()
     video_info = fetch_video.get_video_info(url=url, html=video_src)
+    recommendations = fetch_video.get_recommendations()
     return render_template("watch.html", video_id=video_id, title=Titles.BLANK,
                             urls=urls, video_info=video_info,
-                            qualities=qualities, dark_mode=is_dark_mode())
+                            qualities=qualities, dark_mode=is_dark_mode(),
+                            recommendations=recommendations)
 
 
 @app.route("/settings", methods=[Methods.GET, Methods.POST])

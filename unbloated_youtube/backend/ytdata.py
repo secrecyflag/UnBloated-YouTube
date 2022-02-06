@@ -1,20 +1,8 @@
 from constants import Common, RePatterns, Urls
 from defaultrequest import DefaultRequest
+from features import Recommendation
 import re
 import json
-
-
-class Recommendation:
-    """
-    class to represent a recommendation video.
-    """
-    def __init__(self, title, url):
-        self.title = title
-        self.length = 0 
-        self.url = url
-        self.date = None
-        self.views = 0
-        self.thumbnail = None
 
 
 class YtData(DefaultRequest):
@@ -113,8 +101,11 @@ class YtData(DefaultRequest):
             title = recommend['title']['simpleText']
             url = Urls.YOUTUBE_URL + recommend['navigationEndpoint']['commandMetadata']\
                                                 ['webCommandMetadata']['url']
+            video_id = recommend["videoId"]
             obj = Recommendation(title, url)
+            obj.id = video_id
             obj.thumbnail = recommend['thumbnail']['thumbnails'][0]['url']
+            obj.channel = recommend["shortBylineText"]["runs"][0]["text"]
             if 'lengthText' in recommend.keys():  # it could be a live video (same for the two other conditions)
                 obj.length = recommend['lengthText']['simpleText']
             if 'publishedTimeText' in recommend.keys():

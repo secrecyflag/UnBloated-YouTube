@@ -1,4 +1,4 @@
-from . import YTCFG_OBJ, YTDATA_OBJ
+from . import YTCFG_OBJ, YTDATA_OBJ, RECOMMENDATIONS_OBJ
 
 
 def fetch_video(video_url, quality, hdr=False):
@@ -42,4 +42,19 @@ def get_video_info(url=None, html=None):
         YTDATA_OBJ.is_video = False 
     info = YTDATA_OBJ.get_video_info()
     return info
+
+
+def get_recommendations(more=False):
+    """
+    Function to receive recommendations from YouTube.
+    :param more: True if receive more commendations
+    :return: list of Recommendation object
+    """
+    recommendations = list(YTDATA_OBJ.get_recommendations())
+    if more:
+        con_token = YTDATA_OBJ.get_continuation_token_videos()
+        RECOMMENDATIONS_OBJ.set_con_token(con_token) 
+        RECOMMENDATIONS_OBJ.recommend()
+        recommendations = recommendations + list(RECOMMENDATIONS_OBJ.get_recommendations())
+    return recommendations
 

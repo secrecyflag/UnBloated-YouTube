@@ -10,8 +10,8 @@ audio.volume = 0.2;
 volume.addEventListener("mousemove", (e)=> {  // volume slider
     audio.volume = e.target.value;            
 })
-video.addEventListener("pause", (e)=> {  // if the video is paused
-    console.log("pause")
+video.addEventListener("pause" || "waiting", (e)=> {  // if the video is paused
+    console.log("pause, waiting")
     audio.pause();
     audio.currentTime = video.currentTime;
 })

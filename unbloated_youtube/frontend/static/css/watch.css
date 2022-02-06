@@ -16,3 +16,20 @@ hr {
     margin-left: 0;
 }
 
+.recommendations {
+    white-space: pre-wrap;
+    text-align: justify;
+    position: absolute;
+    left: 67%;
+    top: 0;
+}
+.recommend-thumbnail {
+    float: left;
+    padding: 0 20px 0 0;
+}
+a {
+    color: inherit;
+}
+.recommendation-metadata {
+    display: inline;
+}

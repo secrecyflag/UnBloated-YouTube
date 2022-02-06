@@ -4,7 +4,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='css/watch.css') }}">
 {% endblock head %}
 {% block body %}
-        <div class="watch" style="float: left;">
+    <div class="watch" >
         <video id="mainvideo" width="1240" height="699" controls>
             {% for url in urls["video"] %}
                 <source src="{{ url }}">
@@ -17,13 +17,17 @@
             {% endfor %}
             Your browser does not support the audio tag.
         </audio>
-    </div>
-    <h2>{{ video_info['title'] }}</h2>
-    <p>{{ video_info['views'] }} • {{ video_info['date'] }}</p>
-    <div class="player">
-        <select name="quality_select" form="quality_form">
-            {% for quality in qualities %}
-                <option value="{{ quality }}">{{ quality }}</option>
+        </div>
+        <div class="recommendations">
+            {% for recommendation in recommendations %}
+                <div class="recommend-thumbnail" action="/watch?v={{ recommendation.id }}">
+                    <a href="/watch?v={{ recommendation.id }}">
+                        <img src="{{ recommendation.thumbnail }}" width="168" height="94">
+                    </a>
+                </div>
+                <div class="recommendation-metadata">
+                    <a href="/watch?v={{ recommendation.id }}"><p style="margin: 0;">{{ recommendation.title }}<br></a><b>{{ recommendation.channel }}</b><br>{{ recommendation.views }}</p>
+                </div>
             {% endfor %}
         </div>
         <br>

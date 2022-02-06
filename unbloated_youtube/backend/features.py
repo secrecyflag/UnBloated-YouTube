@@ -184,3 +184,68 @@ class Search(DefaultRequest):
     def set_query(self, query):
         self.query = query
 
+
+class Recommendation:
+    """
+    class to represent a recommendation video.
+    """
+    def __init__(self, title, url):
+        self.title = title
+        self.length = 0 
+        self.url = url
+        self.date = None
+        self.views = 0
+        self.thumbnail = None
+        self.id = None
+        self.channel = None
+
+
+class Recommendations(DefaultRequest):
+    """
+    Class for receiving recommendations of videos
+
+    """
+    def __init__(self, innertube_api, innertube_context, headers, continuation_token):
+        self.url = Urls.YOUTUBE_NEXT_URL.format(innertube_api)
+        self.innertube_context = innertube_context
+        self.con_token = continuation_token
+        headers["Content-Type"] = "application/json"
+        
+        super().__init__(url=self.url, headers=headers)
+
+    def set_con_token(self, con_token):
+        self.con_token = con_token
+
+    def recommend(self):
+        self.innertube_context.update({"continuation": self.con_token})
+        self.post_data = json.dumps(self.innertube_context).encode()
+        self.make_request(post=True)
+        self.convert_json()
+        self.result = self.result["onResponseReceivedEndpoints"][0]["appendContinuationItemsAction"]["continuationItems"]
+    
+    def get_recommendations(self):
+        if self.result is None:
+            return False
+        for recommend in self.result[:-1]:
+            if 'compactVideoRenderer' not in recommend.keys():
+                break 
+            recommend = recommend['compactVideoRenderer']
+            title = recommend['title']['simpleText']
+            url = Urls.YOUTUBE_URL + recommend['navigationEndpoint']['commandMetadata']\
+                                                ['webCommandMetadata']['url']
+            video_id = recommend["videoId"]
+            obj = Recommendation(title, url)
+            obj.id = video_id
+            obj.thumbnail = recommend['thumbnail']['thumbnails'][0]['url']
+            obj.channel = recommend["shortBylineText"]["runs"][0]["text"]
+            if 'lengthText' in recommend.keys():  # it could be a live video (same for the two other conditions)
+                obj.length = recommend['lengthText']['simpleText']
+            if 'publishedTimeText' in recommend.keys():
+                obj.date = recommend['publishedTimeText']['simpleText']
+            if 'simpleText' in recommend['viewCountText'].keys():
+                obj.views = recommend['viewCountText']['simpleText']
+            yield obj
+        # The next continuation token is in the last item of "YouTube next" URL data.
+        # here we setting the new continuation token to the current one
+        self.con_token = self.result[-1]["continuationItemRenderer"]["continuationEndpoint"]["continuationCommand"]["token"]
+

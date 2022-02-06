@@ -10,3 +10,8 @@ YTCFG_OBJ.getconfig()
 YTDATA_OBJ = ytdata.YtData(Urls.YOUTUBE_URL, headers=HEADERS, start=True, is_video=False)
 YTDATA_OBJ.getdata()
 
+INNERTUBE_API = YTCFG_OBJ.get_innertube_api()
+INNERTUBE_CONTEXT = YTCFG_OBJ.get_innertube_context()
+
+RECOMMENDATIONS_OBJ = yt_features.Recommendations(INNERTUBE_API, INNERTUBE_CONTEXT, HEADERS, None)
+

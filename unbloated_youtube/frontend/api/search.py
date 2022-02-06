@@ -1,6 +1,6 @@
 import backend.features
 from backend.constants import Urls
-from . import HEADERS, YTCFG_OBJ
+from . import HEADERS, YTCFG_OBJ, INNERTUBE_API, INNERTUBE_CONTEXT
 
 
 # def search_suggestions(query):  # TODO: return to this later
@@ -8,8 +8,6 @@ from . import HEADERS, YTCFG_OBJ
 #     return backend.features.autocomplete_search(search_link=search_link, query=query, headers=HEADERS)
 
 
-INNERTUBE_API = YTCFG_OBJ.get_innertube_api()
-INNERTUBE_CONTEXT = YTCFG_OBJ.get_innertube_context()
 SEARCH = backend.features.Search(query="", 
                                  innertube_api=INNERTUBE_API, 
                                  innertube_context=INNERTUBE_CONTEXT,
